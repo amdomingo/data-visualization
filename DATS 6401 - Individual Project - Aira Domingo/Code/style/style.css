@@ -1,0 +1,127 @@
+html {
+    height: 100%;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    background: #f2f2f2;
+}
+
+#header{
+    height: 50px;
+}
+
+
+#content h3 {
+    font: normal, 100%, Arial, sans-serif;
+    color: #19191a;
+    text-align: center;
+}
+
+
+#logo_text {
+    position: absolute;
+    top: 20px;
+    right: 50px;
+    z-index: 1;
+
+}
+
+#logo_text h1 a {
+    color: #19191a;
+    font: normal 100% Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    letter-spacing: 3px;
+    display: inline;
+}
+
+ul {
+    margin: 2px 0 22px 17px;
+    display: inline;
+}
+
+ #menu_bar {
+    height: 50px;
+    width: 100%;
+    padding: 10px 5px 10px 5px;
+    position: fixed;
+    z-index: 1;
+    float: right;
+    top: 0px;
+    background: #f2f2f2;
+    overflow: hidden;
+} 
+
+
+ul#menu { 
+    top: 0;
+    background: #f2f2f2;
+}
+
+#menu li {
+    float: left;
+    margin: 10px 0 10px 0;
+    padding: 5px 5px 5px 5px;
+    list-style: none;
+    
+}
+
+#menu li a{
+    font: normal 105% Arial, Helvetica, sans-serif;
+    float: left;
+    height: 20px;
+    text-decoration:none;
+    letter-spacing: 2px;
+    padding: 10px 20px 10px 20px;
+    text-align: center;
+    color: #19191a;
+}
+
+ul#menu li.selected a {
+    height: 25px;
+    color: #19191a;
+    text-decoration: none;
+    border-bottom: 3px solid #19191a;
+    padding-bottom: 0;
+}
+
+
+ul#menu li a:hover {
+    color: #707070;
+}
+
+
+#site_content {
+    height: auto;
+}
+
+
+#content {
+    height: auto;
+    padding: 20px 10px 20px 10px;
+    margin: 50px 0 5px 0;
+}
+
+#top_healthcare_2016_percentage_div {
+    top: 100px;
+    left: 300px;
+}
+
+#footer {
+    padding: 20px 0 20px 0;
+    text-align: center;
+    background: #19191a;
+    letter-spacing: 0.5px;
+    font: normal 100% Arial, Helvetica, sans-serif;
+    color: #e4e7ed;
+    margin: 0 0 0 0;
+
+
+
+}

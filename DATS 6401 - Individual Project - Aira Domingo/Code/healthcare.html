@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+    <title>Visualization Individual Project (Healthcare)</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {'packages': ['geochart', 'corechart'], 'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'});
+
+        google.charts.setOnLoadCallback(drawAllSheets);
+
+        function drawAllSheets() {
+            drawSheetName('clean_health_percent_gdp', 'SELECT A, C, D, E, F, G, H, I, M', healthPercentGDPResponseHandler);
+            drawSheetName('clean_health_per_capita', 'SELECT A, O', meanHealthPercentMeanGDPPerCapitaResponseHandler);
+            drawSheetName('clean_health_percent_gdp', 'SELECT A, N, O', annualHealthGrowthRateResponseHandler);
+            drawSheetName('domestic_private_health', 'SELECT A, D, E, F, G, H, I, J', domesticPrivateHealthResponseHandler);
+            drawSheetName('out_of_pocket_health', 'SELECT A, D, E, F, G, H, I, J', outOfPocketHealthResponseHandler);
+
+
+        } //drawAllSheets()
+        
+        function drawSheetName(sheetName, query, responseHandler) {
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                "https://docs.google.com/spreadsheets/d/1fWwZ1aMXnDSy4TfpQNF9MvqD6LeNG1OzfyKNGaMamuw/gviz/tq?sheet=" + sheetName + "&headers=1&tq=" + queryString
+            );
+
+            query.send(responseHandler)
+        } //drawSheetName
+
+        function healthPercentGDPResponseHandler(response) {
+            var data = response.getDataTable();
+            data.sort({column: 1, desc:true});
+
+            var options = {
+                'height': 500,
+                'width': 1500,
+                'backgroundColor': '#f2f2f2',
+                'vAxis': {'title': 'Exependiture as % of GDP'},
+                'hAxis': {'title': 'Country'},
+                'seriesType': 'bars',
+                'series': {7: {'type': 'line'}}
+            };
+
+            var chart = new google.visualization.ComboChart(document.getElementById('healthcare_percentage_div'));
+            chart.draw(data, options);
+        } //healthPercentGDPResponseHandler
+
+        function meanHealthPercentMeanGDPPerCapitaResponseHandler(response) {
+            var data = response.getDataTable();
+            data.sort({column:1, desc:true});
+
+            var options = {
+                'height': 500,
+                'width': 1400,
+                'backgroundColor': '#f2f2f2',
+                'vAxis': {'title': '% of Mean GDP Per Capita'},
+                'hAxis': {'title': 'Country'},
+                'colors': ['#867bb3'],
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('mean_health_percent_percapita_div'));
+            chart.draw(data, options);
+        } //meanHealthPercentMeanGDPPerCapitaResponseHandler
+
+        function annualHealthGrowthRateResponseHandler(response) {
+            var data = response.getDataTable();
+            data.sort({column:1, desc:true});
+
+            var options ={
+                'backgroundColor': '#f2f2f2',
+                'height': 500,
+                'width': 1400,
+                'colors': ['#594482', '#ab96d6'],
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('growth_rate_health_div'));
+            chart.draw(data, options);
+        } //annualHealthGrowthRateResponseHandler
+
+        function domesticPrivateHealthResponseHandler(response) {
+            var data = response.getDataTable();
+            data.sort({column:1, desc:true});
+
+            var options = {
+                'height': 500,
+                'width': 1400,
+                'backgroundColor': '#f2f2f2',
+                'vAxis': {'title': '% Health Expenditure'},
+                'hAxis': {'title': 'Country'},
+            };
+
+            var chart = new google.visualization.ScatterChart(document.getElementById('domestic_private_health_div'));
+            chart.draw(data, options);
+        } //domesticPrivateHealthResponseHandler
+
+        function outOfPocketHealthResponseHandler(response) {
+            var data = response.getDataTable();
+            data.sort({column:1, desc:true});
+
+            var options = {
+                'height': 500,
+                'width': 1400,
+                'backgroundColor': '#f2f2f2',
+                'vAxis': {'title': 'Expenditure Per Capita (US$)'},
+                'colors': ['#545791']
+            };
+
+            var chart = new google.visualization.BubbleChart(document.getElementById('out_of_pocket_health_div'));
+            chart.draw(data, options);
+        } //outOfPocketHealthResponseHandler
+
+    
+    
+    </script>
+</head>
+<body>
+    <div id = "main">
+        <div id = "header">
+            <div id="menu_bar">
+                <div id = "logo_text">
+                    <h1> <a href="index.html"> Spending of G20 Countries</a></h1>
+                </div> <!--logo_text-->
+                <ul id="menu">
+                    <li><a href="index.html">Overview</a></li>
+                    <li class= "selected"><a href="healthcare.html">Healthcare</a></li>
+                    <li><a href="education.html">Education</a></li>
+                    <li><a href="military.html">Military</a></li>
+                </ul> <!--menu-->
+            </div> <!--menu_bar -->
+        </div> <!--header-->
+        <div id="site_content">
+            <div id="content">
+                <h3>Top Countries' Healthcare Spending as % of GDP</h3>
+                <div id= "healthcare_percentage_div" style= "width: 900px; height: 600px;"></div>
+
+                <h3>Mean Healthcare Per Capita Expenditure as % of Mean GDP Per Capita</h3>
+                <div id= "mean_health_percent_percapita_div" style= "width: 900px; height: 600px;"></div>
+
+                <h3>Countries with Highest Growth Rate of Healthcare Expenditure</h3>
+                <div id= "growth_rate_health_div" style= "width: 900px; height: 600px;"></div>
+
+                <h3>Private Health Expenditure as % of Current Health Expenditure</h3>
+                <div id= "domestic_private_health_div" style= "width: 900px; height: 600px;"></div>
+
+                <h3>Out of Pocket Expediture Per Capita </h3>
+                <div id= "out_of_pocket_health_div" style= "width: 900px; height: 600px;"></div>
+            </div> <!--content-->
+        </div> <!--site_content-->
+        <div id="footer">
+            &copy;
+            <script>
+                var d = new Date()
+                document.write(d.getFullYear());
+            </script>
+            Aira Domingo 
+            | Visualization of Complex Data (current US$)
+            | DATS 6401
+        </div> <!--footer-->
+    </div> <!--main-->  
+</body>
+</html>

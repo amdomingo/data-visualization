@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+    <title>Visualization Individual Project (Military)</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {'packages': ['geochart', 'corechart'], 'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'});
+
+        google.charts.setOnLoadCallback(drawAllSheets);
+
+        function drawAllSheets() {
+            drawSheetName('clean_military_percent', 'SELECT A, C, D, E, F, G, H, I, J, K, M', militaryPercentGDPResponseHandler);
+            drawSheetName('clean_military_percap', 'SELECT A, O',  meanMilitaryPercentMeanGDPPerCapitaResponseHandler);
+            drawSheetName('clean_military_percent', 'SELECT A, N, O', annualMilitaryGrowthRateResponseHandler);
+
+
+
+        } //drawAllSheets()
+        
+        function drawSheetName(sheetName, query, responseHandler) {
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                "https://docs.google.com/spreadsheets/d/1oA36_drbl-R6BvzouLi56Lc3PaLtldcJDSJle1hy1-8/gviz/tq?sheet=" + sheetName + "&headers=1&tq=" + queryString
+            );
+
+            query.send(responseHandler)
+        } //drawSheetName
+
+        function militaryPercentGDPResponseHandler(response) {
+            var data = response.getDataTable();
+            data.sort({column: 1, desc:true});
+
+            var options = {
+                'height': 500,
+                'width': 1500,
+                'backgroundColor': '#f2f2f2',
+                'vAxis': {'title': 'Exependiture as % of GDP'},
+                'hAxis': {'title': 'Country'},
+                'seriesType': 'bars',
+                'series': {9: {'type': 'line'}}
+            };
+
+            var chart = new google.visualization.ComboChart(document.getElementById('military_percentage_div'));
+            chart.draw(data, options);
+        } //militaryPercentResponseHandler
+
+        function meanMilitaryPercentMeanGDPPerCapitaResponseHandler(response) {
+            var data = response.getDataTable();
+            data.sort({column:1, desc:true});
+
+            var options = {
+                'height': 500,
+                'width': 1400,
+                'backgroundColor': '#f2f2f2',
+                'vAxis': {'title': '% of Mean GDP Per Capita'},
+                'hAxis': {'title': 'Country'},
+                'colors': ['#ffa47a'],
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('mean_military_percent_percapita_div'));
+            chart.draw(data, options);
+        } //meanMilitaryPercentMeanGDPPerCapitaResponseHandler
+
+        function annualMilitaryGrowthRateResponseHandler(response) {
+            var data = response.getDataTable();
+            data.sort({column:1, desc:true});
+
+            var options ={
+                'backgroundColor': '#f2f2f2',
+                'height': 600,
+                'width': 1400,
+                'colors': ['#ffba6b', '#f5d4ae'],
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('growth_rate_military_div'));
+            chart.draw(data, options);
+        } //annualMilitaryGrowthRateResponseHandler
+    
+    
+    
+    
+    
+    
+    
+    
+    </script>
+</head>
+<body>
+    <div id = "main">
+        <div id = "header">
+            <div id="menu_bar">
+                <div id = "logo_text">
+                    <h1> <a href="index.html"> Spending of G20 Countries</a></h1>
+                </div> <!--logo_text-->
+                <ul id="menu">
+                    <li><a href="index.html">Overview</a></li>
+                    <li><a href="healthcare.html">Healthcare</a></li>
+                    <li><a href="education.html">Education</a></li>
+                    <li class= "selected"><a href="military.html">Military</a></li>
+                </ul> <!--menu-->
+            </div> <!--menu_bar -->
+        </div> <!--header-->
+        <div id="site_content">
+            <div id="content">
+                <h3>Top Countries' Military Expenditure as % of GDP</h3>
+                <div id= "military_percentage_div" style= "width: 900px; height: 600px;"></div>
+
+
+                <h3>Mean Military Per Capita Expenditure as % of Mean GDP Per Capita</h3>
+                <div id= "mean_military_percent_percapita_div" style= "width: 900px; height: 600px;"></div>
+
+                <h3>Countries with Highest Growth Rate of Military Expenditure</h3>
+                <div id= "growth_rate_military_div" style= "width: 900px; height: 600px;"></div>
+            </div> <!--content-->
+        </div> <!--site_content-->
+        <div id="footer">
+            &copy;
+            <script>
+                var d = new Date()
+                document.write(d.getFullYear());
+            </script>
+            Aira Domingo 
+            | Visualization of Complex Data
+            | DATS 6401
+        </div> <!--footer-->
+    </div> <!--main-->  
+</body>
+</html>

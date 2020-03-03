@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+    <title>Visualization Individual Project (Overview)</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {'packages': ['geochart', 'corechart'], 'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'});
+
+        google.charts.setOnLoadCallback(drawAllSheets);
+
+        function drawAllSheets() {
+            drawSheetName('clean_gdp', 'SELECT A, M', topCountriesMeanGDPResponseHandler);
+            drawSheetName('clean_gdp', 'SELECT A, C, D, E, F, G, H, I, J, K', topGDPResponseHandler);
+            drawSheetName('clean_gdp_percap', 'SELECT A, C, D, E, F, G, H, I, J, K', topGDPPercapResponseHandler);
+            drawSheetName('compare_3', 'SELECT A, C, D, E', meanSpendingAllPercentGDPResponseHandler);
+
+        } //drawAllSheets()
+        
+        function drawSheetName(sheetName, query, responseHandler) {
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                "https://docs.google.com/spreadsheets/d/1d7Bmt2zaOxacAkdMwHn5nByCXTG94Gsh77jglY5CN6g/gviz/tq?sheet=" + sheetName + "&headers=1&tq=" + queryString
+            );
+
+            query.send(responseHandler)
+        } //drawSheetName
+
+        function topCountriesMeanGDPResponseHandler(response) {
+            var data = response.getDataTable();
+            data.sort({column: 1, desc:true});
+
+            var options = {
+                'title': "Countries with Highest Mean GDP from 2010-2018",
+                'height': 750,
+                'width': 1400,
+                'backgroundColor': '#f2f2f2',
+                'colorAxis': {'colors': ['#1c3740', '#1c3740']},
+                'datalessRegionColor': '#dedede',
+                'legend': {'width': 100}
+            };
+
+            var chart = new google.visualization.GeoChart(document.getElementById('top_mean_gdp_div'));
+            chart.draw(data, options);
+        } //topCountriesMeanGDPResponseHandler
+
+        function topGDPResponseHandler(response) {
+            var data = response.getDataTable();
+            data.sort({column: 1, desc: true});
+
+            var options = {
+                'height': 500,
+                'width': 1500,
+                'backgroundColor': '#f2f2f2',
+                'vAxis': {'title': 'GDP (current USD)'},
+                'hAxis': {'title': 'Country'}
+            };
+            
+            var chart = new google.visualization.ColumnChart(document.getElementById('top_gdp_div'));
+            chart.draw(data, options)
+        } //topGDPResponseHandler
+
+        function topGDPPercapResponseHandler(response) {
+            var data = response.getDataTable();
+            data.sort({column:1, desc: true});
+
+            var options = {
+                'height': 500,
+                'width': 1500,
+                'backgroundColor': '#f2f2f2',
+                'vAxis': {'title': 'GDP Per Capita (current USD)'},
+                'hAxis': {'title': 'Country'}
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('top_gdp_percap_div'));
+            chart.draw(data, options)
+    
+        } //topGDPPercapResponseHandler
+
+        function meanSpendingAllPercentGDPResponseHandler(response) {
+            var data = response.getDataTable();
+            data.sort({column:1, desc: true});
+
+            var options = {
+                'height': 500,
+                'width': 1400,
+                'backgroundColor': '#f2f2f2',
+                'vAxis': {'title': 'Expenditure as % of GDP'},
+                'hAxis': {'title': 'Country'},
+                'colors': ['#867bb3', '#7bb3af', '#ffa47a'],
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('mean_spending_all_percent_div'));
+            chart.draw(data, options)           
+        } //meanSpendingAllPercentGDPResponseHandler
+
+        
+    
+    
+    
+    
+    
+    
+    
+    </script>
+</head>
+<body>
+    <div id = "main">
+        <div id = "header">
+            <div id="menu_bar">
+                <div id = "logo_text">
+                    <h1> <a href="index.html"> Spending of G20 Countries</a></h1>
+                </div> <!--logo_text-->
+                <ul id="menu">
+                    <li class= "selected"><a href="index.html">Overview</a></li class= "selected">
+                    <li><a href="healthcare.html">Healthcare</a></li>
+                    <li><a href="education.html">Education</a></li>
+                    <li><a href="military.html">Military</a></li>
+                </ul> <!--menu-->
+            </div> <!--menu_bar -->
+        </div> <!--header-->
+        <div id="site_content">
+            <div id="content">
+                <h3>Countries with Highest Mean GDP from 2010-2018 (current USD)</h3>
+                <div id= "top_mean_gdp_div" style= "width: 1400px; height: 750px;"></div>
+
+                <h3>Countries' GDP (current USD)</h3>
+                <div id= "top_gdp_div" style= "width: 900px; height: 600px;"></div>
+
+                <h3>Countries' GDP Per Capita (current USD)</h3>
+                <div id= "top_gdp_percap_div" style= "width: 900px; height: 600px;"></div>
+                
+                <h3>Mean Healthcare, Education, and Military Expenditure as % of GDP</h3>
+                <div id= "mean_spending_all_percent_div" style= "width: 900px; height: 600px;"></div>
+            </div> <!--content-->
+        </div> <!--site_content-->
+        <div id="footer">
+            &copy;
+            <script>
+                var d = new Date()
+                document.write(d.getFullYear());
+            </script>
+            Aira Domingo 
+            | Visualization of Complex Data
+            | DATS 6401
+        </div> <!--footer-->
+    </div> <!--main-->  
+</body>
+</html>
